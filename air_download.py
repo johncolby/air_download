@@ -17,6 +17,7 @@ def parse_args():
     return arguments
 
 def main(args):
+    # Import login credentials
     with open(args.cred_path) as fd:
         userId, password = [x.strip() for x in fd.readlines()]
 
@@ -25,11 +26,13 @@ def main(args):
         'password': password
     }
 
+    # Initialize AIR session and store authorization token
     session = requests.post(urljoin(args.URL, 'login'), json = auth_info).json()
 
     jwt = session['token']['jwt']
     header = {'Authorization': 'Bearer ' + jwt}
 
+    # Search for study by accession number 
     study = requests.post(urljoin(args.URL, 'secure/search/query-data-source'), 
         headers = header,
         json = {'name': '',
@@ -40,6 +43,7 @@ def main(args):
                 'sourceId': 1
         }).json()['exams'][0]
 
+    # Make a list of all included series
     series = requests.post(urljoin(args.URL, 'secure/search/series'),
         headers = header,
         json = study).json()
@@ -52,6 +56,7 @@ def main(args):
             }).json()
         return check['status'] in ['started', 'completed']
 
+    # Prepare download job
     download_info = requests.post(urljoin(args.URL, 'secure/search/download/start'),
         headers = header,
         json = {'decompress': False,
@@ -62,15 +67,18 @@ def main(args):
                 'study': study 
         }).json()
 
+    # Ensure that archive is ready for download
     while not has_started():
         time.sleep(0.1)
 
+    # Download archive
     download_stream = requests.post(urljoin(args.URL, 'secure/search/download/zip'),
         headers = {'Upgrade-Insecure-Requests': '1'},
         data = {'params': json.dumps({'downloadId': download_info['downloadId'], 'projectId': -1, 'name': 'Download.zip'}),
                 'jwt': jwt
         }, stream=True)
 
+    # Save archive to disk
     with open('Download.zip', 'wb') as fd:
         for chunk in download_stream.iter_content(chunk_size=8192):
             if chunk:
