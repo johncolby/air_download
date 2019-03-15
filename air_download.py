@@ -11,9 +11,14 @@ def parse_args():
 
     parser.add_argument('URL', help='URL for AIR API, e.g. https://air.<domain>.edu/api/')
     parser.add_argument('acc', metavar='ACCESSION', help='Accession # to download')
-    parser.add_argument('-c', '--cred_path', help='login credentials file', default='./air_login.txt')
+    parser.add_argument('-c', '--cred_path', help='Login credentials file', default='./air_login.txt')
+    parser.add_argument('-o', '--output', help='Output path', default='./<Accession>.zip')
 
     arguments = parser.parse_args()
+
+    if arguments.output == './<Accession>.zip':
+        arguments.output = '{acc}.zip'.format(acc=arguments.acc)
+
     return arguments
 
 def main(args):
@@ -79,7 +84,7 @@ def main(args):
         }, stream=True)
 
     # Save archive to disk
-    with open('Download.zip', 'wb') as fd:
+    with open(args.output, 'wb') as fd:
         for chunk in download_stream.iter_content(chunk_size=8192):
             if chunk:
                 _ = fd.write(chunk)
