@@ -45,7 +45,7 @@ Type `air_download.py -h` for the help text.
 
 ```
 $ air_download.py -h
-usage: air_download.py [-h] [-c CRED_PATH] URL ACCESSION
+usage: air_download.py [-h] [-c CRED_PATH] [-o OUTPUT] URL ACCESSION
 
 positional arguments:
   URL                   URL for AIR API, e.g. https://air.<domain>.edu/api/
@@ -54,5 +54,7 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -c CRED_PATH, --cred_path CRED_PATH
-                        login credentials file (default: ./air_login.txt)
+                        Login credentials file (default: ./air_login.txt)
+  -o OUTPUT, --output OUTPUT
+                        Output path (default: ./<Accession>.zip)
 ```
