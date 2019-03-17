@@ -12,6 +12,7 @@ def parse_args():
     parser.add_argument('URL', help='URL for AIR API, e.g. https://air.<domain>.edu/api/')
     parser.add_argument('acc', metavar='ACCESSION', help='Accession # to download')
     parser.add_argument('-c', '--cred_path', help='Login credentials file', default='./air_login.txt')
+    parser.add_argument('-p', '--profile', help='Anonymization Profile', default=-1)
     parser.add_argument('-o', '--output', help='Output path', default='./<Accession>.zip')
 
     arguments = parser.parse_args()
@@ -66,7 +67,7 @@ def main(args):
         headers = header,
         json = {'decompress': False,
                 'name': 'Download.zip',
-                'profile': -1,
+                'profile': args.profile,
                 'projectId': -1,
                 'series': series,
                 'study': study 
