@@ -26,7 +26,7 @@ This is a small wrapper interface to the AIR web API. This will help you to batc
 
 ```
 cd /path/to/air_download/
-./airdownload.py -c /path/to/air_login.txt https://air.<domain>.edu/api/ 11111111
+./air_download.py -c /path/to/air_login.txt https://air.<domain>.edu/api/ 11111111
 ```
 
 Login credentials should be stored in a plain text file like:
