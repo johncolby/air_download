@@ -4,29 +4,18 @@ This is a small wrapper interface to the AIR web API. This will help you to batc
 
 ## Install
 
-1. Clone repository.
+Install the `air_download` package directly from the git repository like:
 
-    ```bash
-    git clone https://github.com/johncolby/air_download
-    ```
+```bash
+pip install git+https://github.com/johncolby/air_download
+```
 
-1. Make sure `python` is installed.
-
-    ```bash
-    python --version
-    ```
-
-1. Install `requests` python dependency, if not already available. For example:
-
-    ```bash
-    pip install requests
-    ```
+(modify URL if the repository lives somewhere other than github)
 
 ## Usage
 
 ```
-cd /path/to/air_download/
-./air_download.py -c /path/to/air_login.txt https://air.<domain>.edu/api/ 11111111
+air_download -c /path/to/air_login.txt https://air.<domain>.edu/api/ 11111111
 ```
 
 Login credentials should be stored in a plain text file like:
@@ -41,11 +30,11 @@ Please ensure this file is reasonably secure.
 chmod 600 air_login.txt
 ```
 
-Type `air_download.py -h` for the help text.
+Type `air_download -h` for the help text.
 
 ```
-$ air_download.py -h
-usage: air_download.py [-h] [-c CRED_PATH] [-p PROFILE] [-o OUTPUT]
+$ air_download -h
+usage: air_download [-h] [-c CRED_PATH] [-p PROFILE] [-o OUTPUT]
                        URL ACCESSION
 
 positional arguments:
@@ -60,4 +49,20 @@ optional arguments:
                         Anonymization Profile (default: -1)
   -o OUTPUT, --output OUTPUT
                         Output path (default: ./<Accession>.zip)
+```
+
+From within python, you can also import the module directly, so that it may be integrated with other tools.
+
+```python
+import air_download.air_download as air
+import argparse
+
+args = argparse.Namespace()
+args.cred_path = '/path/to/air_login.txt'
+args.URL       = 'https://air.<domain>.edu/api/'
+args.acc       = '11111111'
+args.profile   = -1
+args.output    = '11111111.zip'
+
+air.main(args)
 ```

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import argparse
 import time
 import json
@@ -90,6 +88,5 @@ def main(args):
             if chunk:
                 _ = fd.write(chunk)
 
-if __name__ == '__main__':
-    arguments = parse_args()
-    main(arguments)
+def cli():
+    main(parse_args())
