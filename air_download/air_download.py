@@ -1,3 +1,4 @@
+import os
 import argparse
 import time
 import json
@@ -9,7 +10,7 @@ def parse_args():
 
     parser.add_argument('URL', help='URL for AIR API, e.g. https://air.<domain>.edu/api/')
     parser.add_argument('acc', metavar='ACCESSION', help='Accession # to download')
-    parser.add_argument('-c', '--cred_path', help='Login credentials file', default='./air_login.txt')
+    parser.add_argument('-c', '--cred_path', help='Login credentials file. If not present, will look for AIR_USERNAME and AIR_PASSWORD environment variables.', default=None)
     parser.add_argument('-p', '--profile', help='Anonymization Profile', default=-1)
     parser.add_argument('-o', '--output', help='Output path', default='./<Accession>.zip')
 
@@ -22,9 +23,14 @@ def parse_args():
 
 def main(args):
     # Import login credentials
-    with open(args.cred_path) as fd:
-        userId, password = [x.strip() for x in fd.readlines()]
-
+    if args.cred_path is None:
+        userId   = os.environ.get('AIR_USERNAME')
+        password = os.environ.get('AIR_PASSWORD')
+        assert((userId and password) is not None), "AIR credentials not provided."
+    else:
+        assert(os.path.exists(args.cred_path)), f'AIR credential file ({args.cred_path}) does not exist.'
+        with open(args.cred_path) as fd:
+            userId, password = [x.strip() for x in fd.readlines()]    
     auth_info = {
         'userId': userId,
         'password': password

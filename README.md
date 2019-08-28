@@ -30,12 +30,21 @@ Please ensure this file is reasonably secure.
 chmod 600 air_login.txt
 ```
 
+Alternatively, credentials may be stored as environment variables like:
+
+```bash
+AIR_USERNAME=username
+AIR_PASSWORD=password
+export AIR_USERNAME AIR_PASSWORD
+
+air_download https://air.<domain>.edu/api/ 11111111
+```
+
 Type `air_download -h` for the help text.
 
 ```
 $ air_download -h
-usage: air_download [-h] [-c CRED_PATH] [-p PROFILE] [-o OUTPUT]
-                       URL ACCESSION
+usage: air_download [-h] [-c CRED_PATH] [-p PROFILE] [-o OUTPUT] URL ACCESSION
 
 positional arguments:
   URL                   URL for AIR API, e.g. https://air.<domain>.edu/api/
@@ -44,7 +53,9 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -c CRED_PATH, --cred_path CRED_PATH
-                        Login credentials file (default: ./air_login.txt)
+                        Login credentials file. If not present, will look for
+                        AIR_USERNAME and AIR_PASSWORD environment variables.
+                        (default: None)
   -p PROFILE, --profile PROFILE
                         Anonymization Profile (default: -1)
   -o OUTPUT, --output OUTPUT
