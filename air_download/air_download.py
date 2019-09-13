@@ -3,6 +3,7 @@ import argparse
 import time
 import json
 import requests
+from dotenv import dotenv_values
 from urllib.parse import urljoin
 
 def parse_args():
@@ -29,8 +30,9 @@ def main(args):
         assert((userId and password) is not None), "AIR credentials not provided."
     else:
         assert(os.path.exists(args.cred_path)), f'AIR credential file ({args.cred_path}) does not exist.'
-        with open(args.cred_path) as fd:
-            userId, password = [x.strip() for x in fd.readlines()]    
+        envs = dotenv_values(args.cred_path)
+        userId = envs['AIR_USERNAME']
+        password = envs['AIR_PASSWORD']  
     auth_info = {
         'userId': userId,
         'password': password

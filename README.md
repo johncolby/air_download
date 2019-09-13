@@ -20,8 +20,8 @@ air_download -c /path/to/air_login.txt https://air.<domain>.edu/api/ 11111111
 
 Login credentials should be stored in a plain text file like:
 ```
-username
-password
+AIR_USERNAME=username
+AIR_PASSWORD=password
 ```
 
 Please ensure this file is reasonably secure.
